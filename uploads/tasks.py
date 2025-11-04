@@ -33,6 +33,7 @@ def process_video(self, video_name):
                 '-b:v', '0',
                 '-c:a', 'libopus',
                 '-b:a', '128k',
+                '-r', '30',
                 output_path_local
             ]
 
@@ -61,3 +62,8 @@ def process_video(self, video_name):
         except Exception as e:
             logger.error(f"An error occurred processing {video_name}: {e}")
             raise self.retry(exc=e, countdown=300)
+
+@shared_task(bind=True)
+def delete_videos(self, video_name):
+    default_storage.delete(video_name)
+    default_storage.delete(video_name.replace("raw.mp4", "processed.webm"))
