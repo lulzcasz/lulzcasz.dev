@@ -11,4 +11,5 @@ dependencies = [
 [dependency-groups]
 dev = [
     "psycopg[binary]~=3.2",
+    "rust-just~=1.43",
 ]

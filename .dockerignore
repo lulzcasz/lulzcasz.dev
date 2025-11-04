@@ -7,3 +7,4 @@
 .dockerignore
 compose.yaml
 Dockerfile
+Justfile
