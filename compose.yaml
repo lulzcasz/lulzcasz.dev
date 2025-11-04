@@ -1,0 +1,30 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uv run manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /app
+        - action: sync+restart
+          path: uv.lock
+          target: /app/uv.lock
+    env_file:
+      - .env
+    environment:
+      - DATABASE_HOST=database
+    restart: on-failure
+  database:
+    image: postgres:18-alpine3.22
+    environment:
+      POSTGRES_DB: laboratoriodolyc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    restart: on-failure
