@@ -17,4 +17,4 @@ class Video(Model):
         return str(self.uuid)
     
     def get_processed_video_url(self):
-        return self.video.url.replace("raw.mp4", "processed.mp4")
+        return self.video.url.replace("raw.mp4", "processed.webm")

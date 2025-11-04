@@ -12,4 +12,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN apt update \ 
+    && apt install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN uv sync
