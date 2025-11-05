@@ -7,17 +7,20 @@ from django.db.models import (
     URLField,
     SlugField,
     DateTimeField,
+    UUIDField,
 )
 from django.utils.text import slugify
 from tinymce.models import HTMLField
 from django.contrib.auth.models import User
+from uuid import uuid4
 
 
 class Post(Model):
     class Status(TextChoices):
         DRAFT = 'rascunho', 'Rascunho'
         PUBLISHED = 'publicado', 'Publicado'
-
+        
+    uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     title = CharField("título", max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
     description = CharField("descrição", max_length=160)
