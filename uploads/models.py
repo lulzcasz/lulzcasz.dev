@@ -1,39 +1,67 @@
-from django.db.models import Model, FileField, UUIDField, ImageField
+from django.db.models import (
+    Model,
+    FileField,
+    UUIDField,
+    ForeignKey,
+    CASCADE,
+    DateTimeField,
+    DO_NOTHING,
+    BooleanField,
+    TextChoices,
+    CharField,
+    ImageField,
+)
 from uuid import uuid4
+from django.contrib.auth.models import User
 from os.path import join
 
 
-def get_video_upload_path(instance, filename):
-    ext = filename.split('.')[-1].lower()
-
-    return join(f'videos/{instance.uuid}', f'raw.{ext}')
+def upload_post_image_to_path(instance, filename):
+    return join(f'posts/{instance.post.uuid}/images', f'{instance.uuid}.webp')
 
 
-def get_image_upload_path(instance, filename):
-    ext = filename.split('.')[-1].lower()
-
-    return join(f'images/{instance.uuid}', f'raw.{ext}')
-
-
-class Video(Model):
+class AbstractMedia(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
-    video = FileField(upload_to=get_video_upload_path)
+    post = ForeignKey('posts.Post', CASCADE)
+    uploaded_by = ForeignKey(User, DO_NOTHING, verbose_name="autor")
+    uploaded_at = DateTimeField(auto_now_add=True)
+    processed = BooleanField("processado")
+
+    class Meta:
+        abstract = True
 
     def __str__(self):
         return str(self.uuid)
     
-    def get_processed_video_url(self):
-        return self.video.url.replace("raw.mp4", "processed.webm")
+
+class Image(AbstractMedia):
+    class Kind(TextChoices):
+        POST_COVER = 'post_cover', 'Capa do Post'
+        POST_CONTENT_IMAGE = 'post_content_image', 'Imagem do Conteúdo do Post'
+
+    image = ImageField("imagem", upload_to=upload_post_image_to_path)
+    post = ForeignKey('posts.Post', CASCADE, related_name='cover_images')
+    uploaded_by = ForeignKey(
+        User, DO_NOTHING, related_name='images', verbose_name="enviado por"
+    )
+    kind = CharField("tipo", max_length=20, choices=Kind.choices)
     
 
-class Image(Model):
-    uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
-    image = ImageField("imagem", upload_to=get_image_upload_path)
+    class Meta:
+        verbose_name = "imagem"
+        verbose_name_plural = "imagens"
 
-    def __str__(self):
-        return str(self.uuid)
-    
-    def get_processed_image_url(self):
-        base_path, old_filename = self.image.url.rsplit('/', 1)
 
-        return f"{base_path}/processed.webp"
+def upload_post_video_to_path(instance, filename):
+    return join(f'posts/{instance.post.uuid}/videos', f'{instance.uuid}.webm')
+
+
+class Video(AbstractMedia):
+    video = FileField(upload_to=upload_post_video_to_path)
+    post = ForeignKey('posts.Post', CASCADE, related_name='content_videos')
+    uploaded_by = ForeignKey(
+        User, DO_NOTHING, related_name='videos', verbose_name="enviado por"
+    )
+
+    class Meta:
+        verbose_name = "Vídeo"
