@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/prism.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/prism-coy.min.css' %}">
+        <script src=" https://cdn.jsdelivr.net/npm/prismjs@1.30/plugins/autoloader/prism-autoloader.min.js "></script>
+        {% block title %}{% endblock %}
+        <style>
+            h5.card-title,
+            p.card-text {
+                text-align: justify;
+            }
+        </style>
+    </head>
+    {% block body %}{% endblock %}
+</html>

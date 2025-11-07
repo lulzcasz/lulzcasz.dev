@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'tinymce',
     'uploads',
     'posts',
+    'blog',
 ]
 
 TINYMCE_DEFAULT_CONFIG = {
@@ -81,7 +82,7 @@ ROOT_URLCONF = 'laboratoriodolyc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'laboratoriodolyc/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +131,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'laboratoriodolyc/static'
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

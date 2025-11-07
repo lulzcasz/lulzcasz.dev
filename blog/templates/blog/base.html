@@ -1,0 +1,23 @@
+{% include 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <body class="d-flex flex-column min-vh-100" data-prismjs-copy="Copiar" data-prismjs-copy-error="Erro ao copiar, utilize Ctrl+C!" data-prismjs-copy-success="Copiado!">
+        <header>
+            <nav class="navbar bg-dark" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/">Laboratório do Lyc</a>
+                </div>
+            </nav>
+        </header>
+        {% block main %}{% endblock %}
+        <footer>
+            <div class="p-5 bg-dark text-white">
+                <div class="container py-5 text-center">   
+                    <p>Laboratório do Lyc © 2025 Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+{% endblock body %}
