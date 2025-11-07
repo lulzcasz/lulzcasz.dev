@@ -3,7 +3,7 @@ from django.db.models import (
     TextChoices,
     CharField,
     ForeignKey,
-    CASCADE,
+    SET_NULL,
     URLField,
     SlugField,
     DateTimeField,
@@ -23,10 +23,12 @@ class Post(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     title = CharField("título", max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
-    description = CharField("descrição", max_length=160)
-    author = ForeignKey(User, CASCADE, related_name='posts', verbose_name="autor")
-    cover = URLField("capa")
-    content = HTMLField("conteúdo")
+    description = CharField("descrição", max_length=160, blank=True)
+    author = ForeignKey(
+        User, SET_NULL, related_name='posts', verbose_name="autor", null=True
+    )
+    cover = URLField("capa", blank=True)
+    content = HTMLField("conteúdo", blank=True)
     created_at = DateTimeField("criado em", auto_now_add=True)
     updated_at = DateTimeField("atualizado em", auto_now=True)
     status = CharField(max_length=16, choices=Status.choices, default=Status.DRAFT)
