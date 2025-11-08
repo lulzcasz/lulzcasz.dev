@@ -26,7 +26,7 @@ COPY . .
 
 RUN uv sync --no-dev
 
-CMD ["uv", "run", "--no-dev", "gunicorn", "laboratoriodolyc.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]
+CMD ["uv", "run", "--no-dev", "gunicorn", "laboratoriodolyc.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "5"]
 
 FROM ghcr.io/astral-sh/uv:0.9-trixie AS worker_production
 
@@ -40,4 +40,4 @@ RUN apt update \
 
 RUN uv sync --no-dev
 
-CMD ["uv", "run", "celery", "-A", "laboratoriodolyc", "worker", "--loglevel=DEBUG"]
+CMD ["uv", "run", "--no-dev", "celery", "-A", "laboratoriodolyc", "worker", "-c", "2", "--loglevel", "INFO"]
