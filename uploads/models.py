@@ -17,7 +17,7 @@ from os.path import join
 
 
 def upload_post_image_to_path(instance, filename):
-    return join(f'posts/{instance.post.uuid}/images', f'{instance.uuid}.webp')
+    return join(f'posts/{instance.post.uuid}/images', f'{instance.uuid}.avif')
 
 
 class AbstractMedia(Model):
