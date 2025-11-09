@@ -25,11 +25,10 @@ def process_video(self, video_id):
             '-i', input_url,
             '-vf', 'scale=1024:576:force_original_aspect_ratio=decrease',
             '-c:v', 'libvpx-vp9',
-            '-crf', '30',
+            '-crf', '32',
             '-b:v', '0',
             '-c:a', 'libopus',
-            '-b:a', '128k',
-            '-r', '30',
+            '-b:a', '64k',
             '-y',
             temp_output_path
         ]
