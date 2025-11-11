@@ -1,0 +1,12 @@
+{% for node in nodes %}
+    <div class="tag-node" style="margin-left: {{ depth|default:0 }}px;">
+        <a href="{% url 'posts-by-tag' tag_full_path=node.full_path %}">
+            <span class="badge bg-primary me-2">
+                {{ node.name }}
+            </span>
+        </a>
+    </div>
+    {% if node.children %}
+        {% include "blog/_post_tags.html" with nodes=node.children depth=depth|default:0|add:20 %}
+    {% endif %}
+{% endfor %}
