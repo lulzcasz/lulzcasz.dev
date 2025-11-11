@@ -1,0 +1,14 @@
+h5.card-title,
+p.card-text {
+    text-align: justify;
+}
+
+pre.diff-highlight > code .token.deleted:not(.prefix),
+pre > code.diff-highlight .token.deleted:not(.prefix) {
+    width: 1000px;
+}
+
+pre.diff-highlight > code .token.inserted:not(.prefix),
+pre > code.diff-highlight .token.inserted:not(.prefix) {
+    width: 1000px;
+}

@@ -12,16 +12,16 @@
         <link rel="stylesheet" href="{% static 'css/prism-toolbar.min.css' %}">
         <script src="{% static 'js/prism-autoloader.min.js' %}"></script>
         <script src="{% static 'js/prism-toolbar.min.js' %}"></script>
-        <script src="{% static 'js/prism-copy-to-clipboard.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/prism-treeview.min.css' %}">
         <script src="{% static 'js/prism-treeview.min.js' %}"></script>
+        <script src="{% static 'js/prism-line-numbers.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/prism-line-numbers.min.css' %}">
+        <script src="{% static 'js/prism-command-line.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/prism-command-line.min.css' %}">
+        <script src="{% static 'js/prism-diff-highlight.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/prism-diff-highlight.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         {% block title %}{% endblock %}
-        <style>
-            h5.card-title,
-            p.card-text {
-                text-align: justify;
-            }
-        </style>
         <script>
             Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1.24/components/';
         </script>
