@@ -199,6 +199,18 @@ wheels = [
 ]
 
 [[package]]
+name = "django-treebeard"
+version = "4.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bb/24/eaccbce17355380cb3a8fe6ad92a85b76453dc1f0ecd04f48bfe8929065b/django-treebeard-4.7.1.tar.gz", hash = "sha256:846e462904b437155f76e04907ba4e48480716855f88b898df4122bdcfbd6e98", size = 294139, upload-time = "2024-01-31T16:35:19.751Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/79/259966820614746cc4d81762edf97a53bf1e3b8e74797c010d310c6f4a8f/django_treebeard-4.7.1-py3-none-any.whl", hash = "sha256:995c7120153ab999898fe3043bbdcd8a0fc77cc106eb94de7350e9d02c885135", size = 93210, upload-time = "2024-01-31T16:35:17.843Z" },
+]
+
+[[package]]
 name = "executing"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -297,6 +309,7 @@ dependencies = [
     { name = "django" },
     { name = "django-storages", extra = ["s3"] },
     { name = "django-tinymce" },
+    { name = "django-treebeard" },
     { name = "gunicorn" },
     { name = "pillow" },
     { name = "psycopg" },
@@ -316,6 +329,7 @@ requires-dist = [
     { name = "django", specifier = "~=5.2" },
     { name = "django-storages", extras = ["s3"], specifier = "~=1.14" },
     { name = "django-tinymce", specifier = "~=5.0" },
+    { name = "django-treebeard", specifier = "~=4.7" },
     { name = "gunicorn", specifier = "~=23.0" },
     { name = "pillow", specifier = "~=12.0" },
     { name = "psycopg", specifier = "~=3.2" },

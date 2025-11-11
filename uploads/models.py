@@ -40,9 +40,6 @@ class Image(AbstractMedia):
 
     image = ImageField("imagem", upload_to=upload_post_image_to_path)
     post = ForeignKey('posts.Post', CASCADE, related_name='cover_images')
-    uploaded_by = ForeignKey(
-        User, set, related_name='images', verbose_name="enviado por", null=True
-    )
     kind = CharField("tipo", max_length=20, choices=Kind.choices)
     
 
@@ -58,9 +55,6 @@ def upload_post_video_to_path(instance, filename):
 class Video(AbstractMedia):
     video = FileField(upload_to=upload_post_video_to_path)
     post = ForeignKey('posts.Post', CASCADE, related_name='content_videos')
-    uploaded_by = ForeignKey(
-        User, SET_NULL, related_name='videos', verbose_name="enviado por", null=True
-    )
 
     class Meta:
         verbose_name = "Vídeo"

@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'tinymce',
+    'treebeard',
     'uploads',
     'posts',
     'blog',
