@@ -1,0 +1,18 @@
+{% if category.children %}
+    <li>
+        <a class="dropdown-item has-submenu" href="/categorias/{{ category.data.full_path }}/">
+            {{ category.data.name }}
+        </a>
+        <ul class="dropdown-menu dropdown-submenu">
+            {% for child in category.children %}
+                {% include "blog/_category_submenu.html" with category=child %}
+            {% endfor %}
+        </ul>
+    </li>
+{% else %}
+    <li>
+        <a class="dropdown-item" href="/categorias/{{ category.data.full_path }}/">
+            {{ category.data.name }}
+        </a>
+    </li>
+{% endif %}
