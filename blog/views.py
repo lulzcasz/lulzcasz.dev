@@ -25,10 +25,6 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {'page_obj': page_obj})
 
 
-from logging import getLogger
-logger = getLogger(__name__)
-
-
 def post_detail(request, post_slug):
     return render(
         request,
@@ -42,11 +38,6 @@ def posts_by_section(request, section_slug):
 
 
 def posts_by_category(request, category_full_path):
-    from logging import getLogger
-    logger = getLogger(__name__)
-
-    logger.warning(category_full_path)
-
     posts = Category.objects.get(full_path=category_full_path).posts
 
     return render(request, 'blog/posts_by_category.html', {'posts': posts})
