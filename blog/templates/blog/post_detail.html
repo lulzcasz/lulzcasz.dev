@@ -26,7 +26,11 @@
                         </div>
                     </a>
                 </div>
-                {% include "blog/_post_categories.html" with nodes=categories %}
+                {% for category in post.categories.all %}
+                    <a href="{% url 'posts-by-category' category_full_path=category.full_path %}" class="btn btn-sm btn-outline-secondary">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
             </div>
         </div>
     </main>
