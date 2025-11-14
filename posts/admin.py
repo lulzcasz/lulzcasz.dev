@@ -16,4 +16,21 @@ class CategoryAdmin(TreeAdmin):
     form = movenodeform_factory(Category)
 
 
-admin.site.register(Post, admin.ModelAdmin)
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = [
+        'title',
+        'created_at',
+        'updated_at',
+        'published_at',
+        'status',
+        'section',
+        'category_list',
+    ]
+
+    list_filter = ('status', 'section', 'categories')
+
+    def category_list(self, obj):
+        return ", ".join(obj.categories.all().values_list('name', flat=True))
+    
+    category_list.short_description = "lista de categorias"
