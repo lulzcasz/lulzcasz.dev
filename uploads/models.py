@@ -1,24 +1,28 @@
-from django.db.models import (
-    Model,
-    FileField,
-    UUIDField,
-    ForeignKey,
-    CASCADE,
-    DateTimeField,
-    BooleanField,
-    TextChoices,
-    CharField,
-    ImageField,
-)
 from uuid import uuid4
-from os.path import join
+
+from django.db.models import (
+    CASCADE,
+    CharField,
+    DateTimeField,
+    FileField,
+    ForeignKey,
+    ImageField,
+    Model,
+    TextChoices,
+    UUIDField,
+)
+from uploads.utils.upload_to import (
+    post_image_processed_path,
+    post_image_source_path,
+    post_video_processed_path,
+    post_video_source_path,
+)
 
 
 class AbstractMedia(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
-    post = ForeignKey('posts.Post', CASCADE)
+    post = ForeignKey("posts.Post", CASCADE)
     uploaded_at = DateTimeField(auto_now_add=True)
-    processed = BooleanField("processado")
 
     class Meta:
         abstract = True
@@ -27,32 +31,35 @@ class AbstractMedia(Model):
         return str(self.uuid)
 
 
-def upload_post_image_to_path(instance, filename):
-    return join(f'posts/{instance.post.uuid}/images', f'{instance.uuid}.avif')
-
-
 class Image(AbstractMedia):
     class Kind(TextChoices):
-        POST_COVER = 'post_cover', 'Capa do Post'
-        POST_CONTENT_IMAGE = 'post_content_image', 'Imagem do Conteúdo do Post'
+        POST_COVER = "post_cover", "Capa do Post"
+        POST_CONTENT_IMAGE = "post_content_image", "Imagem do Conteúdo do Post"
 
-    image = ImageField("imagem", upload_to=upload_post_image_to_path)
-    post = ForeignKey('posts.Post', CASCADE, related_name='cover_images')
+    source = ImageField("fonte", upload_to=post_image_source_path, max_length=128)
+    processed = ImageField(
+        "processada",
+        upload_to=post_image_processed_path,
+        max_length=128,
+        blank=True,
+    )
+    post = ForeignKey("posts.Post", CASCADE, related_name="cover_images")
     kind = CharField("tipo", max_length=20, choices=Kind.choices)
-    
 
     class Meta:
         verbose_name = "imagem"
         verbose_name_plural = "imagens"
 
 
-def upload_post_video_to_path(instance, filename):
-    return join(f'posts/{instance.post.uuid}/videos', f'{instance.uuid}.webm')
-
-
 class Video(AbstractMedia):
-    video = FileField(upload_to=upload_post_video_to_path)
-    post = ForeignKey('posts.Post', CASCADE, related_name='content_videos')
+    source = FileField("fonte", upload_to=post_video_source_path, max_length=128)
+    processed = FileField(
+        "processado",
+        upload_to=post_video_processed_path,
+        max_length=128,
+        blank=True,
+    )
+    post = ForeignKey("posts.Post", CASCADE, related_name="content_videos")
 
     class Meta:
         verbose_name = "vídeo"

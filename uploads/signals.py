@@ -8,23 +8,23 @@ from uploads.tasks.video import process_video, delete_video
 
 @receiver(post_save, sender=Image)
 def image_post_save(sender, instance, created, **kwargs):
-    if created:
-        transaction.on_commit(lambda: process_image.delay(instance.id))
+    transaction.on_commit(lambda: process_image.delay(instance.id))
 
 
 @receiver(post_delete, sender=Image)
 def image_post_delete(sender, instance, **kwargs):
-    if instance.image:
-        transaction.on_commit(lambda: delete_image.delay(instance.image.name))
+    transaction.on_commit(
+        lambda: delete_image.delay(instance.source.name, instance.processed.name)
+    )
 
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
-    if created:  
-        transaction.on_commit(lambda: process_video.delay(instance.id))
+    transaction.on_commit(lambda: process_video.delay(instance.id))
 
 
 @receiver(post_delete, sender=Video)
-def video_post_delete(sender, instance, **kwargs):
-    if instance.video:     
-        transaction.on_commit(lambda: delete_video.delay(instance.video.name))
+def video_post_delete(sender, instance, **kwargs):   
+    transaction.on_commit(
+        lambda: delete_video.delay(instance.source.name, instance.processed.name)
+    )

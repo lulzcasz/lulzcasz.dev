@@ -11,10 +11,10 @@ from django.core.files.base import ContentFile
 def process_video(self, video_id):
     video = Video.objects.get(id=video_id)
 
-    input_url = video.video.url
+    input_url = video.source.url
     temp_output_path = None
 
-    base_name, _ = os.path.splitext(video.video.name)
+    base_name, _ = os.path.splitext(video.source.name)
     new_s3_key = f"{base_name}.webm"
 
     with tempfile.NamedTemporaryFile(suffix='.webm', delete=False) as temp_output:
@@ -38,13 +38,13 @@ def process_video(self, video_id):
         with open(temp_output_path, 'rb') as f:
             processed_content = ContentFile(f.read())
 
-            video.video.save(new_s3_key, processed_content, save=False)
+            video.processed.save(new_s3_key, processed_content, save=False)
         
-        video.processed = True
-        video.save(update_fields=['video', 'processed'])
+        Video.objects.filter(id=video_id).update(processed=video.processed.name)
 
         os.remove(temp_output_path)
 
 @shared_task(bind=True)
-def delete_video(self, video_name):
-    default_storage.delete(video_name)
+def delete_video(self, source, processed):
+    default_storage.delete(source)
+    default_storage.delete(processed)

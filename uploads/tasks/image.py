@@ -12,7 +12,20 @@ def process_image(self, image_id):
     image = Image.objects.get(id=image_id)
 
     with tempfile.NamedTemporaryFile(suffix='.avif', delete=True) as temp_output:
-        with image.image.open('rb') as old:
+        from logging import getLogger
+        logger = getLogger(__name__)
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+
+        logger.warning('aaaaaaaaaaaaaaaa')
+        logger.warning('aaaaaaaaaaaaaaaa')
+        
+        logger.warning(temp_output.name)
+        with image.source.open('rb') as old:
             if image.kind == Image.Kind.POST_COVER:
                 subprocess.run([
                     'ffmpeg',
@@ -75,12 +88,12 @@ def process_image(self, image_id):
             with open(temp_output.name, 'rb') as f:
                 processed_content = ContentFile(f.read())
 
-                image.image.save(image.image.name, processed_content, save=False)
-
-    image.processed = True
-    image.save()
+                image.processed.save(temp_output.name, processed_content, save=False)
+    
+    Image.objects.filter(id=image_id).update(processed=image.processed.name)
 
 
 @shared_task(bind=True)
-def delete_image(self, image_name):
-    default_storage.delete(image_name)
+def delete_image(self, source, processed):
+    default_storage.delete(source)
+    default_storage.delete(processed)
