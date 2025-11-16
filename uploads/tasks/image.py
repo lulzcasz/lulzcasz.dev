@@ -12,19 +12,6 @@ def process_image(self, image_id):
     image = Image.objects.get(id=image_id)
 
     with tempfile.NamedTemporaryFile(suffix='.avif', delete=True) as temp_output:
-        from logging import getLogger
-        logger = getLogger(__name__)
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-
-        logger.warning('aaaaaaaaaaaaaaaa')
-        logger.warning('aaaaaaaaaaaaaaaa')
-        
-        logger.warning(temp_output.name)
         with image.source.open('rb') as old:
             if image.kind == Image.Kind.POST_COVER:
                 subprocess.run([
