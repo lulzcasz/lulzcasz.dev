@@ -71,10 +71,12 @@ class Category(MP_Node):
         verbose_name_plural = 'categories'
 
     def get_absolute_url(self):
-        return reverse('posts-by-category', kwargs={'category_full_path': self.full_path})
+        return reverse(
+            'posts-by-category', kwargs={'category_full_path': self.full_path}
+        )
 
 
-class Post(Model):
+class Post(MP_Node):
     class Status(TextChoices):
         DRAFT = 'draft'
         PUBLISHED = 'published'
@@ -91,6 +93,7 @@ class Post(Model):
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     section = ForeignKey(Section, SET_NULL, null=True, blank=True, related_name='posts')
     categories = ManyToManyField(Category, related_name='posts', blank=True)
+    related = ManyToManyField('self', blank=True, symmetrical=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -103,9 +106,6 @@ class Post(Model):
     
     def __str__(self):
         return self.title
-    
-    class Meta:
-        ordering = ['-created_at']
 
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'post_slug': self.slug})
