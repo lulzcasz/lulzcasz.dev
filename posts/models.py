@@ -49,10 +49,7 @@ class Category(MP_Node):
         if not self.slug:
             self.slug = slugify(self.name)
             
-        ancestor_slugs = list(
-            self.get_ancestors().values_list('slug', flat=True)
-        )
-  
+        ancestor_slugs = list(self.get_ancestors().values_list('slug', flat=True))
         ancestor_slugs.append(self.slug)
 
         new_full_path = "/".join(ancestor_slugs)
@@ -86,7 +83,7 @@ class Post(Model):
     title = CharField(max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
     description = CharField(max_length=160, blank=True)
-    cover = URLField("capa", blank=True)
+    cover = URLField(blank=True)
     content = HTMLField(blank=True)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
