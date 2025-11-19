@@ -9,7 +9,7 @@
         <div class="row pt-3">
             <div class="col-xxl-8 bg-body-tertiary">
                 {% for post in page_obj %}
-                    <a href="{% url 'post-detail' post_slug=post.slug %}" class="text-decoration-none text-reset">
+                    <a href="{% url 'post-detail' post_full_path=post.full_path %}" class="text-decoration-none text-reset">
                         <div class="card mb-3 border border-0 rounded-4">
                             <div class="row g-0 align-items-center">
                                 <div class="col-lg-5">

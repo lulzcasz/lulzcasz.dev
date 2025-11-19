@@ -26,6 +26,7 @@ class PostAdmin(TreeAdmin):
 
     list_display = [
         'title',
+        'full_path',
         'created_at',
         'updated_at',
         'published_at',
