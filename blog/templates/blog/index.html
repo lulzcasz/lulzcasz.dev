@@ -12,7 +12,7 @@
         <div class="row align-items-center rounded-4 pt-3">
             <div class="col-xl-4">
                 {% if posts %}
-                    <a href="{% url 'post-detail' post_full_path=posts.0.full_path %}" class="text-decoration-none text-reset">
+                    <a href="{% url 'post-detail' post_slug=posts.0.slug %}" class="text-decoration-none text-reset">
                         <div class="card mb-3 border-0 rounded-4">
                             <img src="{{ posts.0.cover }}" class="card-img-top rounded-top-4" alt="{{ posts.0.title }}">
                             <div class="card-body">
@@ -26,7 +26,7 @@
             </div>
             <div class="col-xl-8">
                 {% for post in posts|slice:"1:3" %}
-                    <a href="{% url 'post-detail' post_full_path=post.full_path %}" class="text-decoration-none text-reset">
+                    <a href="{% url 'post-detail' post_slug=post.slug %}" class="text-decoration-none text-reset">
                         <div class="card mb-3 border-0 rounded-end-4">
                             <div class="row g-0 align-items-center">
                                 <div class="col-lg-5">

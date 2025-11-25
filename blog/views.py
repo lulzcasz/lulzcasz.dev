@@ -25,11 +25,11 @@ def post_list(request):
     return render(request, 'blog/post_list.html', {'page_obj': page_obj})
 
 
-def post_detail(request, post_full_path):
+def post_detail(request, post_slug):
     return render(
         request,
         'blog/post_detail.html',
-        {'post': get_object_or_404(Post, full_path=post_full_path, status=Post.Status.PUBLISHED)}
+        {'post': get_object_or_404(Post, slug=post_slug, status=Post.Status.PUBLISHED)}
     )
 
 

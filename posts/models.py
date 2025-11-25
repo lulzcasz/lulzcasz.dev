@@ -76,7 +76,7 @@ class Category(MP_Node):
         )
 
 
-class Post(MP_Node):
+class Post(Model):
     class Status(TextChoices):
         DRAFT = 'draft'
         PUBLISHED = 'published'
@@ -84,7 +84,6 @@ class Post(MP_Node):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     title = CharField(max_length=60, unique=True)
     slug = SlugField(max_length=60, blank=True)
-    full_path = CharField(max_length=128, unique=True, blank=True)
     description = CharField(max_length=160, blank=True)
     cover = URLField(blank=True)
     content = HTMLField(blank=True)
@@ -103,25 +102,12 @@ class Post(MP_Node):
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
 
-        ancestor_slugs = list(self.get_ancestors().values_list('slug', flat=True))
-        ancestor_slugs.append(self.slug)
-
-        new_full_path = "/".join(ancestor_slugs)
-
-        self.full_path = new_full_path
-
-        with transaction.atomic():
-            super().save(*args, **kwargs)
-
-            descendants = self.get_descendants()
-                
-            for descendant in descendants:
-                descendant.save()
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse(
-            'post-detail', kwargs={'post_full_path': self.full_path}
+            'post-detail', kwargs={'post_slug': self.slug}
         )
