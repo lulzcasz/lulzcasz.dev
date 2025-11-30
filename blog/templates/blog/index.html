@@ -3,50 +3,63 @@
 {% load static %}
 
 {% block title %}
-    <title>Laboratório do Lyc</title>
+  <title>Laboratório do Lyc</title>
 {% endblock title %}
 
 {% block main %}
-    <main class="container bg-light pt-4 pb-3 flex-fill">
-        <h2>Posts Recentes</h2>
-        <div class="row align-items-center rounded-4 pt-3">
-            <div class="col-xl-4">
-                {% if posts %}
-                    <a href="{% url 'post-detail' post_slug=posts.0.slug %}" class="text-decoration-none text-reset">
-                        <div class="card mb-3 border-0 rounded-4">
-                            <img src="{{ posts.0.cover }}" class="card-img-top rounded-top-4" alt="{{ posts.0.title }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ posts.0.title }}</h5>
-                                <p class="card-text">{{ posts.0.description }}</p>
-                                <p class="card-text"><small class="text-body-secondary">{{ posts.0.created_at | date }}</small></p>
-                            </div>
-                        </div>
-                    </a>
-                {% endif %}
+  <main class="container bg-light pt-3 flex-fill">
+    <div class="row align-items-center rounded-4">
+      <div class="col-xl-4">
+        {% if posts %}
+          <a href="{% url 'post-detail' post_slug=posts.0.slug %}" class="text-decoration-none text-reset">
+            <div class="card mb-3 border-0 rounded-4">
+              <img src="{{ posts.0.cover }}" class="card-img-top rounded-top-4" alt="{{ posts.0.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ posts.0.title }}</h5>
+                <p class="card-text">{{ posts.0.description }}</p>
+                <p class="card-text d-flex align-items-center">
+                  <span class="bg-secondary text-white rounded px-2 me-2">
+                    {{ posts.0.get_kind_display }}
+                  </span>
+                  <small class="text-body-secondary">
+                    {{ posts.0.created_at | date }}
+                  </small>
+                </p>
+              </div>
             </div>
-            <div class="col-xl-8">
-                {% for post in posts|slice:"1:3" %}
-                    <a href="{% url 'post-detail' post_slug=post.slug %}" class="text-decoration-none text-reset">
-                        <div class="card mb-3 border-0 rounded-end-4">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-lg-5">
-                                    <img src="{{ post.cover }}" class="img-fluid rounded-start-4" alt="...">
-                                </div>
-                                <div class="col-lg-7">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post.title }}</h5>
-                                        <p class="card-text">{{ post.description }}</p>
-                                        <p class="card-text"><small class="text-body-secondary">{{ post.created_at | date }}</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
-                <div class="d-flex justify-content-center pt-2">
-                    <a href="{% url 'post-list' %}" style="width: 100%;" type="button" class="btn btn-primary rounded-2">Ver Todos os Posts</a>
+          </a>
+        {% endif %}
+      </div>
+      <div class="col-xl-8">
+        {% for post in posts|slice:"1:3" %}
+          <a href="{% url 'post-detail' post_slug=post.slug %}" class="text-decoration-none text-reset">
+            <div class="card mb-3 border-0 rounded-end-4">
+              <div class="row g-0 align-items-center">
+                <div class="col-lg-5">
+                  <img src="{{ post.cover }}" class="img-fluid rounded-start-4" alt="{{ post.title }}">
                 </div>
+                <div class="col-lg-7">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.description }}</p>
+                    <p class="card-text d-flex align-items-center">
+                      <span class="bg-secondary text-white rounded px-2 me-2">
+                        {{ post.get_kind_display }}
+                      </span>
+                      <small class="text-body-secondary">
+                        {{ post.created_at | date }}
+                      </small>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </a>
+        {% endfor %}
+        <div class="d-flex justify-content-center">
+          <a href="{% url 'post-list' %}" style="width: 100%;" type="button" class="btn btn-primary rounded-2">Ver Todos os Posts</a>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 {% endblock main %}

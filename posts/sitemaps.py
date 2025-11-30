@@ -1,21 +1,10 @@
 from django.contrib.sitemaps import Sitemap
-from posts.models import Section, Category, Post
-
-
-class SectionSitemap(Sitemap):
-    changefreq = "weekly"
-    priority = 0.7
-
-    def items(self):
-        return Section.objects.all()
-
-    def lastmod(self, obj):
-        return obj.updated_at
+from posts.models import Category, Post
 
 
 class CategorySitemap(Sitemap):
     changefreq = "weekly"
-    priority = 0.8
+    priority = 0.7
 
     def items(self):
         return Category.objects.all()

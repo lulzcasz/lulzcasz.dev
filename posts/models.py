@@ -2,13 +2,14 @@ from django.db.models import (
     Model,
     TextChoices,
     CharField,
-    ForeignKey,
-    SET_NULL,
+    CASCADE,
     URLField,
     SlugField,
     DateTimeField,
     UUIDField,
     ManyToManyField,
+    OneToOneField,
+    BooleanField,
 )
 from django.utils.text import slugify
 from tinymce.models import HTMLField
@@ -19,31 +20,12 @@ from django.db import transaction
 from django.utils import timezone
 
 
-class Section(Model):
-    name = CharField(unique=True, max_length=32)
-    slug = SlugField(unique=True, max_length=32, blank=True)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('posts-by-section', kwargs={'section_slug': self.slug})
-
-
 class Category(MP_Node):
-    name = CharField(max_length=32)
+    name = CharField('nome', max_length=32)
     slug = SlugField(max_length=32, blank=True)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
-    full_path = CharField(max_length=128, unique=True, blank=True)
+    created_at = DateTimeField('criada em', auto_now_add=True)
+    updated_at = DateTimeField('atualizada em', auto_now=True)
+    full_path = CharField('caminho completo', max_length=128, unique=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -58,9 +40,7 @@ class Category(MP_Node):
 
         with transaction.atomic():
             super().save(*args, **kwargs)
-
-            descendants = self.get_descendants()
-                
+            descendants = self.get_descendants()   
             for descendant in descendants:
                 descendant.save()
 
@@ -68,7 +48,7 @@ class Category(MP_Node):
         return self.name
     
     class Meta:
-        verbose_name_plural = 'categories'
+        verbose_name = 'categoria'
 
     def get_absolute_url(self):
         return reverse(
@@ -78,22 +58,29 @@ class Category(MP_Node):
 
 class Post(Model):
     class Status(TextChoices):
-        DRAFT = 'draft'
-        PUBLISHED = 'published'
+        DRAFT = 'draft', 'Rascunho'
+        PUBLISHED = 'published', 'Publicado'
+
+    class Kind(TextChoices):
+        TUTORIAL = "tutorial", 'Tutorial'
+        ARTICLE = "article", 'Artigo'
+        NEWS = "news", 'Notícia'
         
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
-    title = CharField(max_length=60, unique=True)
+    title = CharField('título', max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
-    description = CharField(max_length=160, blank=True)
-    cover = URLField(blank=True)
-    content = HTMLField(blank=True)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
-    published_at = DateTimeField(null=True, editable=False)
+    description = CharField('descrição', max_length=160, blank=True)
+    cover = URLField('capa', blank=True)
+    video = URLField('vídeo', blank=True)
+    kind = CharField('tipo', max_length=10, choices=Kind.choices)
+    content = HTMLField('conteúdo', blank=True)
+    created_at = DateTimeField('criado em', auto_now_add=True)
+    updated_at = DateTimeField('atualizado em', auto_now=True)
+    published_at = DateTimeField('publicado em', null=True, editable=False)
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
-    section = ForeignKey(Section, SET_NULL, null=True, blank=True, related_name='posts')
-    categories = ManyToManyField(Category, related_name='posts', blank=True)
-    related = ManyToManyField('self', blank=True, symmetrical=True)
+    categories = ManyToManyField(
+        Category, verbose_name='categorias', related_name='posts', blank=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -106,8 +93,44 @@ class Post(Model):
     
     def __str__(self):
         return self.title
-
+    
     def get_absolute_url(self):
         return reverse(
             'post-detail', kwargs={'post_slug': self.slug}
         )
+
+
+class Tutorial(Model):
+    post = OneToOneField(Post, CASCADE)
+    prerequisites = ManyToManyField(
+        'self', verbose_name='pré-requisitos', blank=True, symmetrical=False
+    )
+
+    def __str__(self):
+        return self.post.title
+
+    class Meta:
+        verbose_name_plural = 'tutoriais'
+
+
+class Article(Model):
+    post = OneToOneField(Post, CASCADE)
+    is_review = BooleanField('é review', default=False)
+    is_opinion = BooleanField('é opinião', default=False)
+
+    def __str__(self):
+        return self.post.title
+
+    class Meta:
+        verbose_name = 'artigo'
+
+
+class News(Model):
+    post = OneToOneField(Post, CASCADE)
+    is_breaking = BooleanField('é urgente', default=False)
+
+    def __str__(self):
+        return self.post.title
+
+    class Meta:
+        verbose_name = 'notícia'

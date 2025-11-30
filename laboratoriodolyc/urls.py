@@ -4,13 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from posts.sitemaps import SectionSitemap, CategorySitemap, PostSitemap
+from posts.sitemaps import CategorySitemap, PostSitemap
 
 
 sitemaps_dict = {
-    'sections': SectionSitemap,
-    'categories': CategorySitemap,
-    'posts': PostSitemap,
+    'categories': CategorySitemap, 'posts': PostSitemap,
 }
 
 
@@ -24,7 +22,7 @@ urlpatterns = [
         sitemap,
         {'sitemaps': sitemaps_dict},
         name='django.contrib.sitemaps.views.sitemap'
-        ),
+    ),
     path('', include('blog.urls')),
 ]
 

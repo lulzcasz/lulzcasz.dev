@@ -1,10 +1,4 @@
-from posts.models import Section, Category
-
-
-def sections(request):
-    return {
-        'sections': Section.objects.all(),
-    }
+from posts.models import Category
 
 
 def categories(request):

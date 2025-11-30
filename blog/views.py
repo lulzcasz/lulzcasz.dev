@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 
 def index(request):
-    posts = Post.objects.filter(status=Post.Status.PUBLISHED)[:3]
+    posts = Post.objects.filter(status=Post.Status.PUBLISHED).order_by('-published_at')[:3]
 
     ctx = {
         'posts': posts,
@@ -31,10 +31,6 @@ def post_detail(request, post_slug):
         'blog/post_detail.html',
         {'post': get_object_or_404(Post, slug=post_slug, status=Post.Status.PUBLISHED)}
     )
-
-
-def posts_by_section(request, section_slug):
-    return render(request, 'blog/posts_by_section.html', {'posts': 'Post.objects.all(section_slug = section_slug)'})
 
 
 def posts_by_category(request, category_full_path):

@@ -17,15 +17,10 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'tinymce',
     'treebeard',
-    'django_celery_results',
     'uploads',
     'posts',
     'blog',
 ]
-
-CELERY_RESULT_EXTENDED = True
-CELERY_RESULT_BACKEND = 'django-db'
-CELERY_TASK_TRACK_STARTED = True
 
 TINYMCE_DEFAULT_CONFIG = {
     "height": "800px",
@@ -35,6 +30,8 @@ TINYMCE_DEFAULT_CONFIG = {
     "plugins": "image codesample directionality fullscreen link lists advlist media preview table code",
     "toolbar": "undo redo | blocks fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent| forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | pagebreak anchor codesample ltr rtl",
     "toolbar_mode": "wrap",
+    'content_css': 'dark',
+    'skin': 'oxide-dark',
     'license_key': 'gpl',
     "codesample_languages": [
         {"text": "Arduino", "value": "arduino"},
@@ -83,7 +80,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'posts.context_processors.sections',
                 'posts.context_processors.categories',
             ],
         },
@@ -118,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'America/Santarem'
 

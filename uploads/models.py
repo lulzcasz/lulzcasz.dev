@@ -22,7 +22,7 @@ from uploads.utils.upload_to import (
 class AbstractMedia(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     post = ForeignKey("posts.Post", CASCADE)
-    uploaded_at = DateTimeField(auto_now_add=True)
+    uploaded_at = DateTimeField('enviado em', auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -33,20 +33,27 @@ class AbstractMedia(Model):
 
 class Image(AbstractMedia):
     class Kind(TextChoices):
-        POST_COVER = "post_cover"
-        POST_CONTENT_IMAGE = "post_content_image"
+        POST_COVER = "post_cover", 'Capa do Post'
+        POST_CONTENT_IMAGE = "post_content_image", 'Imagem do Conteúdo do Post'
 
-    source = ImageField(upload_to=post_image_source_path, max_length=128)
+    source = ImageField('fonte', upload_to=post_image_source_path, max_length=128)
     processed = ImageField(
-        upload_to=post_image_processed_path, max_length=128, blank=True,
+        'processada', upload_to=post_image_processed_path, max_length=128, blank=True,
     )
     post = ForeignKey("posts.Post", CASCADE, related_name="cover_images")
-    kind = CharField(max_length=20, choices=Kind.choices)
+    kind = CharField('tipo', max_length=20, choices=Kind.choices)
+
+    class Meta:
+        verbose_name = 'imagem'
+        verbose_name_plural = 'imagens'
 
 
 class Video(AbstractMedia):
-    source = FileField(upload_to=post_video_source_path, max_length=128)
+    source = FileField('fonte', upload_to=post_video_source_path, max_length=128)
     processed = FileField(
-        upload_to=post_video_processed_path, max_length=128, blank=True,
+        'processado', upload_to=post_video_processed_path, max_length=128, blank=True,
     )
     post = ForeignKey("posts.Post", CASCADE, related_name="content_videos")
+
+    class Meta:
+        verbose_name = 'vídeo'
