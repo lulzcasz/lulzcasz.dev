@@ -1,5 +1,4 @@
 from django.db.models import (
-    Model,
     TextChoices,
     CharField,
     CASCADE,
@@ -8,7 +7,6 @@ from django.db.models import (
     DateTimeField,
     UUIDField,
     ManyToManyField,
-    OneToOneField,
     BooleanField,
     ImageField,
 )
@@ -19,6 +17,7 @@ from django.urls import reverse
 from treebeard.mp_tree import MP_Node
 from django.db import transaction
 from posts.utils.upload_to import post_image_path
+from polymorphic.models import PolymorphicModel
 
 
 class Category(MP_Node):
@@ -57,15 +56,10 @@ class Category(MP_Node):
         )
 
 
-class Post(Model):
+class Post(PolymorphicModel):
     class Status(TextChoices):
         DRAFT = 'draft', 'Rascunho'
         PUBLISHED = 'published', 'Publicado'
-
-    class Kind(TextChoices):
-        TUTORIAL = "tutorial", 'Tutorial'
-        ARTICLE = "article", 'Artigo'
-        NEWS = "news", 'Notícia'
         
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     title = CharField('título', max_length=60, unique=True)
@@ -73,7 +67,6 @@ class Post(Model):
     description = CharField('descrição', max_length=160, blank=True)
     cover = ImageField('capa', upload_to=post_image_path, blank=True)
     video = URLField('vídeo', blank=True)
-    kind = CharField('tipo', max_length=10, choices=Kind.choices)
     content = HTMLField('conteúdo', blank=True)
     created_at = DateTimeField('criado em', auto_now_add=True)
     updated_at = DateTimeField('atualizado em', auto_now=True)
@@ -106,37 +99,25 @@ class Post(Model):
         )
 
 
-class Tutorial(Model):
-    post = OneToOneField(Post, CASCADE)
+class Tutorial(Post):
     prerequisites = ManyToManyField(
         'self', verbose_name='pré-requisitos', blank=True, symmetrical=False
     )
-
-    def __str__(self):
-        return self.post.title
 
     class Meta:
         verbose_name_plural = 'tutoriais'
 
 
-class Article(Model):
-    post = OneToOneField(Post, CASCADE)
+class Article(Post):
     is_review = BooleanField('é review', default=False)
     is_opinion = BooleanField('é opinião', default=False)
-
-    def __str__(self):
-        return self.post.title
 
     class Meta:
         verbose_name = 'artigo'
 
 
-class News(Model):
-    post = OneToOneField(Post, CASCADE)
+class News(Post):
     is_breaking = BooleanField('é urgente', default=False)
-
-    def __str__(self):
-        return self.post.title
 
     class Meta:
         verbose_name = 'notícia'
