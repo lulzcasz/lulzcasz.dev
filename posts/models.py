@@ -10,6 +10,7 @@ from django.db.models import (
     ManyToManyField,
     OneToOneField,
     BooleanField,
+    ImageField,
 )
 from django.utils.text import slugify
 from tinymce.models import HTMLField
@@ -18,6 +19,7 @@ from django.urls import reverse
 from treebeard.mp_tree import MP_Node
 from django.db import transaction
 from django.utils import timezone
+from posts.utils.upload_to import post_image_path
 
 
 class Category(MP_Node):
@@ -70,7 +72,7 @@ class Post(Model):
     title = CharField('título', max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
     description = CharField('descrição', max_length=160, blank=True)
-    cover = URLField('capa', blank=True)
+    cover = ImageField('capa', upload_to=post_image_path, blank=True)
     video = URLField('vídeo', blank=True)
     kind = CharField('tipo', max_length=10, choices=Kind.choices)
     content = HTMLField('conteúdo', blank=True)
@@ -88,6 +90,15 @@ class Post(Model):
 
         if self.status == self.Status.PUBLISHED and not self.published_at:
             self.published_at = timezone.now()
+
+        self._cover_changed = False
+
+        if self.cover:
+            if self.pk:
+                if Post.objects.get(pk=self.pk).cover != self.cover:
+                    self._cover_changed = True
+            else:
+                self._cover_changed = True
 
         super().save(*args, **kwargs)
     

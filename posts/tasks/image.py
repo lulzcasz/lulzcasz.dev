@@ -1,13 +1,39 @@
 from celery import shared_task
-from uploads.models import Image
 from django.core.files.storage import default_storage
-from PIL import Image as PILImage
 import tempfile
 import subprocess
 from django.core.files.base import ContentFile
 
 
 @shared_task(bind=True)
+def process_cover(self, image_name):
+    image_url = default_storage.url(image_name)
+
+    with tempfile.NamedTemporaryFile(suffix='.avif', delete=True) as temp_output:
+        subprocess.run([
+            'ffmpeg',
+            '-y',
+            '-i',
+            image_url,
+            '-vf',
+            "scale=1024:576",
+            '-pix_fmt',
+            'yuva420p',
+            '-c:v',
+            'libaom-av1',
+            '-still-picture',
+            '1',
+            '-crf',
+            '15',
+            temp_output.name,
+        ])
+
+        with open(temp_output.name, 'rb') as f:
+            processed_content = ContentFile(f.read())
+
+            default_storage.save(image_name, processed_content)
+
+"""@shared_task(bind=True)
 def process_image(self, image_id):
     image = Image.objects.get(id=image_id)
 
@@ -84,3 +110,4 @@ def process_image(self, image_id):
 def delete_image(self, source, processed):
     default_storage.delete(source)
     default_storage.delete(processed)
+"""
