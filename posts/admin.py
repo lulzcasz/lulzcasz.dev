@@ -17,7 +17,6 @@ class PostAdmin(admin.ModelAdmin):
         'title',
         'created_at',
         'updated_at',
-        'published_at',
         'status',
         'kind',
         'category_list',

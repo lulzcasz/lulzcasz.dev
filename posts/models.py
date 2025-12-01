@@ -18,7 +18,6 @@ from uuid import uuid4
 from django.urls import reverse
 from treebeard.mp_tree import MP_Node
 from django.db import transaction
-from django.utils import timezone
 from posts.utils.upload_to import post_image_path
 
 
@@ -78,7 +77,6 @@ class Post(Model):
     content = HTMLField('conteúdo', blank=True)
     created_at = DateTimeField('criado em', auto_now_add=True)
     updated_at = DateTimeField('atualizado em', auto_now=True)
-    published_at = DateTimeField('publicado em', null=True, editable=False)
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     categories = ManyToManyField(
         Category, verbose_name='categorias', related_name='posts', blank=True
@@ -87,9 +85,6 @@ class Post(Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-
-        if self.status == self.Status.PUBLISHED and not self.published_at:
-            self.published_at = timezone.now()
 
         self._cover_changed = False
 

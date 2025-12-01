@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 
 def index(request):
-    posts = Post.objects.filter(status=Post.Status.PUBLISHED).order_by('-published_at')[:3]
+    posts = Post.objects.filter(status=Post.Status.PUBLISHED).order_by('-updated_at')[:3]
 
     ctx = {
         'posts': posts,
