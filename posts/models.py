@@ -1,7 +1,6 @@
 from django.db.models import (
     TextChoices,
     CharField,
-    CASCADE,
     URLField,
     SlugField,
     DateTimeField,
@@ -9,6 +8,8 @@ from django.db.models import (
     ManyToManyField,
     BooleanField,
     ImageField,
+    ForeignKey,
+    SET_NULL,
 )
 from django.utils.text import slugify
 from tinymce.models import HTMLField
@@ -18,6 +19,8 @@ from treebeard.mp_tree import MP_Node
 from django.db import transaction
 from posts.utils.upload_to import post_image_path
 from polymorphic.models import PolymorphicModel
+
+from django.utils import timezone
 
 
 class Category(MP_Node):
@@ -62,6 +65,9 @@ class Post(PolymorphicModel):
         PUBLISHED = 'published', 'Publicado'
         
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
+    author = ForeignKey(
+        'auth.User', SET_NULL, verbose_name='autor', null=True, blank=True
+    )
     title = CharField('título', max_length=60, unique=True)
     slug = SlugField(max_length=60, unique=True, blank=True)
     description = CharField('descrição', max_length=160, blank=True)
@@ -70,6 +76,7 @@ class Post(PolymorphicModel):
     content = HTMLField('conteúdo', blank=True)
     created_at = DateTimeField('criado em', auto_now_add=True)
     updated_at = DateTimeField('atualizado em', auto_now=True)
+    published_at = DateTimeField('publicado em', null=True, editable=False)
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     categories = ManyToManyField(
         Category, verbose_name='categorias', related_name='posts', blank=True
@@ -78,6 +85,9 @@ class Post(PolymorphicModel):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+
+        if self.status == self.Status.PUBLISHED and not self.published_at:
+            self.published_at = timezone.now()
 
         self._cover_changed = False
 
