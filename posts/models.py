@@ -103,6 +103,14 @@ class Post(PolymorphicModel):
     def __str__(self):
         return self.title
     
+    @property
+    def verbose_name(self):
+        return self._meta.verbose_name
+    
+    @property
+    def verbose_name_plural(self):
+        return self._meta.verbose_name_plural
+    
     def get_absolute_url(self):
         return reverse(
             'post-detail', kwargs={'post_slug': self.slug}
