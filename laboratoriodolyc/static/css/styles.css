@@ -12,19 +12,45 @@ pre > code.diff-highlight .token.inserted:not(.prefix) {
     width: 1000px;
 }
 
-.dropdown-menu li {
+/*@media (min-width: 992px) {
+    .dropdown-menu .dropend:hover > .dropdown-menu {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+    }
+}*/
+
+.dropdown-menu .dropend .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -8px;
+    margin-left: 0;
+}
+
+.dropdown-menu .dropend {
     position: relative;
 }
-.dropdown-menu .dropdown-submenu {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: -7px;
+
+.dropend .dropdown-toggle::after {
+    vertical-align: 0.255em;
+    content: "";
 }
-.dropdown-menu .dropdown-submenu-left {
-    right: 100%;
-    left: auto;
+
+@font-face {
+  font-family: 'DeliusUnicase';
+  src: url('../fonts/DeliusUnicase-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
-.dropdown-menu > li:hover > .dropdown-submenu {
-    display: block;
+
+.navbar-brand {
+    font-family: 'DeliusUnicase' !important;
+    font-weight: bold;
+}
+
+.dropdown-menu {
+    border: 0px;
+    border-radius: 8px;
 }
