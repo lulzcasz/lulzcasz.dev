@@ -118,7 +118,10 @@ class Post(PolymorphicModel):
     
     def get_absolute_url(self):
         return reverse(
-            'post-detail', kwargs={'post_slug': self.slug}
+            'post-detail',
+            kwargs={
+                'post_type': slugify(self.verbose_name_plural), 'post_slug': self.slug
+            }
         )
 
 
