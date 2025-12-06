@@ -7,10 +7,9 @@
 {% endblock title %}
 
 {% block main %}
-  <main class="container-xxl bg-light pt-3 flex-fill">
+  <main class="container-xxl bg-body-tertiary flex-fill pt-3">
     {% if posts %}
       <div class="row align-items-center rounded-4">
-        
         <div class="col-xl-4">
           <a href="{% url 'post-detail' post_type=posts.0.verbose_name_plural|slugify post_slug=posts.0.slug %}" class="text-decoration-none text-reset">
             <div class="card border-0 rounded-4">
