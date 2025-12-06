@@ -24,7 +24,12 @@
                 <p style="text-align: justify;">{{ post.description }}</p>
                 <h6 class="pb-2">{{ post.created_at | date }}</h6>
                 <div class="pb-3">
-                    <img class="img-fluid" src="{{ post.cover.url }}" alt="{{ post.title }}">
+                    <img
+                        class="img-fluid"
+                        style="aspect-ratio: 16/9; object-fit: cover;"
+                        src="{{ post.cover.url }}"
+                        alt="{{ post.title }}"
+                    >
                 </div>
                 <div class="pt-3">
                     {{ post.content | safe }}
