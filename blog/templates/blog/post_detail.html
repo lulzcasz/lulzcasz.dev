@@ -19,6 +19,10 @@
     <meta property="article:published_time" content="{{ post.published_at|date:'c' }}" />
     <meta property="article:modified_time" content="{{ post.updated_at|date:'c' }}" />
     <meta property="article:section" content="{{ post.verbose_name|title }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ post.title }}" />
+    <meta name="twitter:description" content="{{ post.description }}" />
+    <meta name="twitter:image" content="{{ post.cover.url }}" />
     {% for category in post.categories.all %}
         <meta property="article:tag" content="{{ category.name }}" />
     {% endfor %}
