@@ -33,16 +33,8 @@ def posts(request):
     )
 
 
-def post_detail(request, post_type, post_slug):
-    model_mapping = {
-        "tutoriais": Tutorial,
-        "artigos": Article,
-        "noticias": News,
-    }
-
-    model_class = model_mapping.get(post_type)
-
-    post = get_object_or_404(model_class, slug=post_slug, status=Post.Status.PUBLISHED)
+def post_detail(request, post_slug):
+    post = get_object_or_404(Post, slug=post_slug, status=Post.Status.PUBLISHED)
 
     selected_cats = post.categories.all()
     paths = set()
