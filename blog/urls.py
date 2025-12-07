@@ -7,8 +7,8 @@ urlpatterns = [
         posts_by_type, 
         name='posts-by-type',
     ),
-    path('<slug:post_slug>/', post_detail, name='post-detail'),
     path('posts/', posts, name="posts"),
+    path('<slug:post_slug>/', post_detail, name='post-detail'),
     path(
         'categorias/<path:category_full_path>/',
         posts_by_category,
