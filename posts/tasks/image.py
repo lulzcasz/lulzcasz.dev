@@ -19,7 +19,7 @@ def process_image(self, image_name, kind):
                 '-i',
                 image_url,
                 '-vf',
-                "scale='if(lt(iw/ih,1200/628),1200,-2)':'if(lt(iw/ih,1200/628),-2,628)',crop=1200:628",
+                "scale='if(lt(iw/ih,1200/630),1200,-2)':'if(lt(iw/ih,1200/628),-2,630)',crop=1200:630",
                 '-pix_fmt',
                 'yuva420p',
                 '-c:v', 
