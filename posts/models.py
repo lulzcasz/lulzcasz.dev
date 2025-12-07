@@ -127,13 +127,6 @@ class Tutorial(Post):
         INTERMEDIATE = "intermediate", "Intermediário"
         ADVANCED = "advanced", "Avançado"
 
-    prerequisites = ManyToManyField(
-        'self',
-        verbose_name='pré-requisitos',
-        blank=True,
-        symmetrical=False,
-        related_name='tutorials',
-    )
     difficulty = CharField("dificuldade", max_length=15, choices=Difficulty.choices)
 
     class Meta:

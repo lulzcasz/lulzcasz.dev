@@ -37,7 +37,7 @@ class PostChildAdmin(PolymorphicChildModelAdmin):
 class TutorialAdmin(PostChildAdmin):
     base_model = Tutorial
 
-    filter_horizontal = PostChildAdmin.filter_horizontal + ('prerequisites',)
+    filter_horizontal = PostChildAdmin.filter_horizontal
 
 
 @admin.register(Article)
