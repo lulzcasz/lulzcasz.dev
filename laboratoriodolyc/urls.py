@@ -4,12 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import index, sitemap
-from posts.sitemaps import StaticSitemap, CategorySitemap, PostSitemap, PostTypeSitemap
+from posts.sitemaps import StaticSitemap, PostSitemap, PostTypeSitemap
 
 
 sitemaps = {
     'static': StaticSitemap,
-    'categories': CategorySitemap,
     'posts': PostSitemap,
     'types': PostTypeSitemap,
 }

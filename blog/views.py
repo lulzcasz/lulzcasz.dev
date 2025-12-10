@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
-from posts.models import Article, Category, News, Post, Tutorial
+from posts.models import Article, News, Post, Tutorial
+from taggit.models import Tag
 
 
 def index(request):
@@ -37,42 +38,21 @@ def post_detail(request, post_slug):
     post = get_object_or_404(Post, slug=post_slug, status=Post.Status.PUBLISHED)
     products = post.products.all()
 
-    selected_cats = post.categories.all()
-    paths = set()
-    step = Category.steplen
-
-    for cat in selected_cats:
-        current_path = cat.path
-        for i in range(step, len(current_path) + 1, step):
-            paths.add(current_path[:i])
-
-    all_cats_queryset = Category.objects.filter(path__in=paths)
-
-    meta_keywords = ", ".join(all_cats_queryset.values_list("name", flat=True))
-
     return render(
-        request,
-        "blog/post_detail.html",
-        {
-            "post": post,
-            "all_cats": all_cats_queryset,
-            "meta_keywords": meta_keywords,
-            "products": products,
-        },
+        request, "blog/post_detail.html", {"post": post, "products": products},
     )
 
 
-def posts_by_category(request, category_full_path):
-    category = get_object_or_404(Category, full_path=category_full_path)
+def posts_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags__name=tag.name).order_by("-published_at")
 
-    all_posts = category.posts.all().order_by("-published_at")
-
-    paginator = Paginator(all_posts, 4)
+    paginator = Paginator(posts, 4)
     page_number = request.GET.get("pagina")
     page_obj = paginator.get_page(page_number)
 
     return render(
-        request, "blog/post_list.html", {"page_obj": page_obj, "title": category.name}
+        request, "blog/post_list.html", {"page_obj": page_obj, "title": tag.name}
     )
 
 

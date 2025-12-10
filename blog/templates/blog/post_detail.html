@@ -23,8 +23,8 @@
     <meta name="twitter:title" content="{{ post.title }}" />
     <meta name="twitter:description" content="{{ post.description }}" />
     <meta name="twitter:image" content="{{ post.cover.url }}" />
-    {% for category in post.categories.all %}
-        <meta property="article:tag" content="{{ category.name }}" />
+    {% for tag in post.tags.all %}
+        <meta property="article:tag" content="{{ tag.name }}" />
     {% endfor %}
 {% endblock meta_tags %}
 
@@ -131,10 +131,10 @@
                         class="btn btn-sm btn-dark rounded-pill px-3">
                             {{ post.verbose_name_plural|title }}
                         </a>
-                        {% for category in post.categories.all %}
-                            <a href="{% url 'posts-by-category' category_full_path=category.full_path %}" 
+                        {% for tag in post.tags.all %}
+                            <a href="{% url 'posts-by-tag' tag_slug=tag.slug %}" 
                             class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                {{ category.name }}
+                                {{ tag.name }}
                             </a>
                         {% endfor %}
                     </div>

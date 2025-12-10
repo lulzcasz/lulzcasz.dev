@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from posts.models import Category, Post
+from posts.models import Post
 from django.urls import reverse
 
 
@@ -13,16 +13,6 @@ class StaticSitemap(Sitemap):
             return reverse(url_name, kwargs=kwargs)
         else:
             return reverse(item)
-
-class CategorySitemap(Sitemap):
-    changefreq = "weekly"
-    priority = 0.7
-
-    def items(self):
-        return Category.objects.all()
-
-    def lastmod(self, obj):
-        return obj.updated_at
 
 
 class PostSitemap(Sitemap):

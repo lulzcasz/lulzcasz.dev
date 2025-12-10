@@ -1,6 +1,4 @@
 from uuid import uuid4
-
-from django.db import transaction
 from django.db.models import (
     SET_NULL,
     BooleanField,
@@ -22,44 +20,7 @@ from django.utils.text import slugify
 from polymorphic.models import PolymorphicModel
 from posts.utils.upload_to import post_image_path
 from tinymce.models import HTMLField
-from treebeard.mp_tree import MP_Node
-
-
-class Category(MP_Node):
-    name = CharField("nome", max_length=60)
-    slug = SlugField(max_length=60, blank=True)
-    description = CharField("descrição", max_length=160, blank=True)
-    created_at = DateTimeField("criada em", auto_now_add=True)
-    updated_at = DateTimeField("atualizada em", auto_now=True)
-    full_path = CharField("caminho completo", max_length=128, unique=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        ancestor_slugs = list(self.get_ancestors().values_list("slug", flat=True))
-        ancestor_slugs.append(self.slug)
-
-        new_full_path = "/".join(ancestor_slugs)
-
-        self.full_path = new_full_path
-
-        with transaction.atomic():
-            super().save(*args, **kwargs)
-            descendants = self.get_descendants()
-            for descendant in descendants:
-                descendant.save()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "categoria"
-
-    def get_absolute_url(self):
-        return reverse(
-            "posts-by-category", kwargs={"category_full_path": self.full_path}
-        )
+from taggit.managers import TaggableManager
 
 
 class Post(PolymorphicModel):
@@ -86,9 +47,7 @@ class Post(PolymorphicModel):
     updated_at = DateTimeField("atualizado em", auto_now=True)
     published_at = DateTimeField("publicado em", null=True, editable=False)
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
-    categories = ManyToManyField(
-        Category, verbose_name="categorias", related_name="posts", blank=True
-    )
+    tags = TaggableManager()
     products = ManyToManyField(
         'products.Product',
         verbose_name="produtos",
@@ -115,24 +74,24 @@ class Post(PolymorphicModel):
         super().save(*args, **kwargs)
 
     def get_related_posts(self):
-        if not self.categories.exists():
+        if not self.tags.exists():
             return Post.objects.none()
 
         return (
             Post.objects.filter(
                 status=self.Status.PUBLISHED,
-                categories__in=self.categories.all(),
+                tags__in=self.tags.all(),
             )
             .exclude(
                 pk=self.pk,
             )
             .annotate(
-                shared_category_count=Count(
-                    "categories",
-                    filter=Q(categories__in=self.categories.all()),
+                shared_tag_count=Count(
+                    "tags",
+                    filter=Q(tags__in=self.tags.all()),
                 )
             )
-            .order_by("-shared_category_count")
+            .order_by("-shared_tag_count")
             [:3]
         )
 

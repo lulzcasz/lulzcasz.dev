@@ -9,6 +9,7 @@ dependencies = [
     "django~=5.2",
     "django-polymorphic~=4.1",
     "django-storages[s3]~=1.14",
+    "django-taggit~=6.1",
     "django-tinymce~=5.0",
     "django-treebeard~=4.7",
     "gunicorn~=23.0",

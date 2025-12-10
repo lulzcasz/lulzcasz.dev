@@ -18,10 +18,13 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'tinymce',
     'treebeard',
+    'taggit',
     'posts',
     'products',
     'blog',
 ]
+
+TAGGIT_CASE_INSENSITIVE = True
 
 TINYMCE_DEFAULT_CONFIG = {
     "height": "800px",
@@ -89,7 +92,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'posts.context_processors.categories',
             ],
         },
     },

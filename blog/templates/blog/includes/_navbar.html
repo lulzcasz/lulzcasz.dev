@@ -15,31 +15,6 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'posts-by-type' post_type='noticias' %}">Notícias</a>
         </li>
-        <li class="nav-item dropdown" id="main-explore-nav">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownExplore" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Categorias
-          </a>
-          <ul class="dropdown-menu bg-body-secondary" aria-labelledby="navbarDropdownExplore">
-            {% for category in categories %}
-              {% if category.children %}
-                <li class="dropend">
-                  <a class="dropdown-item dropdown-toggle submenu-toggle">
-                    {{ category.data.name }}
-                  </a>
-                  <ul class="dropdown-menu bg-body-secondary">
-                    {% include "blog/includes/_nested_dropdown.html" with parent=category childrens=category.children %}
-                  </ul>
-                </li>
-              {% else %}
-                <li>
-                  <a class="dropdown-item" href="{% url 'posts-by-category' category_full_path=category.data.full_path %}">
-                    {{ category.data.name }}
-                  </a>
-                </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </li>
       </ul>
     </div>
   </div>

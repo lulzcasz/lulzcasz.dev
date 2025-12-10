@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from blog.views import index, posts, post_detail, posts_by_category, posts_by_type
+from blog.views import index, posts, post_detail, posts_by_type, posts_by_tag
 
 urlpatterns = [
     path('', index, name="blog-index"),
@@ -9,9 +9,5 @@ urlpatterns = [
     ),
     path('posts/', posts, name="posts"),
     path('<slug:post_slug>/', post_detail, name='post-detail'),
-    path(
-        'categorias/<path:category_full_path>/',
-        posts_by_category,
-        name="posts-by-category",
-    ),
+    path('tags/<slug:tag_slug>/', posts_by_tag, name='posts-by-tag')
 ]

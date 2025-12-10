@@ -1,18 +1,8 @@
 from django.contrib import admin
 from posts.models import Post, Tutorial, Article, News
-from posts.models import Category
-from treebeard.admin import TreeAdmin
-from treebeard.forms import movenodeform_factory
 from polymorphic.admin import (
     PolymorphicParentModelAdmin, PolymorphicChildModelAdmin, PolymorphicChildModelFilter
 )
-
-
-@admin.register(Category)
-class CategoryAdmin(TreeAdmin):
-    list_display = ['name', 'full_path']
-
-    form = movenodeform_factory(Category)
 
 
 class PostChildAdmin(PolymorphicChildModelAdmin):
@@ -29,8 +19,6 @@ class PostChildAdmin(PolymorphicChildModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     
     readonly_fields = ['uuid', 'created_at', 'updated_at', 'published_at']
-
-    filter_horizontal = ('categories',)
     
 
 @admin.register(Tutorial)
