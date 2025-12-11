@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 
+{% load image_utils %}
+
 {% block title %}
     <title>{{ post.title }}</title>
 {% endblock title %}
@@ -39,7 +41,7 @@
                     <img
                         class="img-fluid"
                         style="aspect-ratio: 191/100; object-fit: cover;"
-                        src="{{ post.cover.url }}"
+                        src="{{ post.cover|variant:'large' }}"
                         alt="{{ post.title }}"
                     >
                 </div>
@@ -59,7 +61,7 @@
                                             <img class="product-main-img img-fluid w-100 h-100" 
                                                 src="{{ product.image.url }}" 
                                                 alt="Product Image" 
-                                                style="object-fit: cover; min-height: 150px;">
+                                                style="aspect-ratio: 1/1; object-fit: cover; width: 300px; height: 300px;">
                                         </div>
                                         
                                         <div class="bg-light p-2 d-flex flex-column align-items-center justify-content-center gap-1 flex-shrink-0" 
@@ -100,7 +102,7 @@
                                 <div class="card border-0 rounded-4 pb-3">
                                     <div style="position: relative;"> 
                                         <img 
-                                            src="{{ related_post.cover.url }}" 
+                                            src="{{ related_post.cover|variant:'small' }}" 
                                             class="card-img-top rounded-top-4" 
                                             alt="{{ related_post.title }}"
                                             style="aspect-ratio: 191/100; object-fit: cover;"

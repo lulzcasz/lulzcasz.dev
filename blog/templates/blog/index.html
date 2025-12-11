@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 
+{% load image_utils %}
 {% load static %}
 
 {% block title %}
@@ -15,7 +16,7 @@
         <div class="card border-0 rounded-4">
             <div style="position: relative;"> 
                 <img 
-                    src="{{ posts.0.cover.url }}" 
+                    src="{{ posts.0.cover|variant:'medium' }}" 
                     class="card-img-top rounded-top-4" 
                     alt="{{ posts.0.title }}"
                     style="aspect-ratio: 191/100; object-fit: cover;"
@@ -46,7 +47,7 @@
                   <div class="col-lg-5">
                       <div style="position: relative;">
                           <img 
-                              src="{{ post.cover.url }}" 
+                              src="{{ post.cover|variant:'small' }}" 
                               class="img-fluid rounded-start-4" 
                               alt="{{ post.title }}"
                               style="aspect-ratio: 191/100; object-fit: cover;"
