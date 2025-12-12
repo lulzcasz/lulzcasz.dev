@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 
+{% load image_utils %}
+
 {% block title %}
     <title>{{ title }}</title>
 {% endblock title %}
@@ -14,7 +16,7 @@
                             <div class="row g-0 align-items-center">
                                 <div class="col-lg-5">
                                     <img
-                                        src="{{ post.cover.url }}"
+                                        src="{{ post.cover|variant:'small' }}"
                                         class="img-fluid rounded-start-4"
                                         alt="{{ post.title }}"
                                         style="aspect-ratio: 191/100; object-fit: cover;"
