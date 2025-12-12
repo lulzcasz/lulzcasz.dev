@@ -59,7 +59,7 @@
                                         
                                         <div class="flex-grow-1 position-relative">
                                             <img class="product-main-img img-fluid w-100 h-100" 
-                                                src="{{ product.image.url }}" 
+                                                src="{{ product.image|variant:'small' }}" 
                                                 alt="Product Image" 
                                                 style="aspect-ratio: 1/1; object-fit: cover; width: 300px; height: 300px;">
                                         </div>

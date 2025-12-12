@@ -6,10 +6,8 @@ from django.db.models import (
     CASCADE,
     URLField,
     ForeignKey,
-    ManyToManyField,
     UUIDField,
 )
-from treebeard.mp_tree import MP_Node
 from uuid import uuid4
 from products.utils.upload_to import platform_logo_path, product_image_path
 
@@ -17,20 +15,10 @@ from products.utils.upload_to import platform_logo_path, product_image_path
 class Platform(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     name = CharField('nome', max_length=50)
-    logo = FileField(upload_to=platform_logo_path, null=True, blank=True)
+    logo = FileField(upload_to=platform_logo_path)
     
     class Meta:
         verbose_name = 'plataforma'
-
-    def __str__(self):
-        return self.name
-
-
-class Category(MP_Node):
-    name = CharField("nome", max_length=60)
-
-    class Meta:
-        verbose_name = "categoria"
 
     def __str__(self):
         return self.name
@@ -40,9 +28,6 @@ class Product(Model):
     uuid = UUIDField(default=uuid4, editable=False, unique=True, db_index=True)
     name = CharField('nome', max_length=64)
     image = ImageField('imagem', upload_to=product_image_path)
-    categories = ManyToManyField(
-        Category, verbose_name="categorias", related_name="products", blank=True
-    )
 
     def save(self, *args, **kwargs):
         self._image_changed = False
