@@ -22,5 +22,4 @@ dependencies = [
 dev = [
     "ipython~=9.7",
     "psycopg[binary]~=3.2",
-    "rust-just~=1.43",
 ]
