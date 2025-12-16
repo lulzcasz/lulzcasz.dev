@@ -24,10 +24,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN uv sync --no-dev
-RUN uv run manage.py collectstatic --no-input
+RUN uv sync
 
-CMD ["uv", "run", "--no-dev", "gunicorn", "laboratoriodolyc.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "5"]
+CMD ["/bin/sh", "-c", "uv run manage.py collectstatic --no-input && uv run --no-dev gunicorn laboratoriodolyc.wsgi:application --bind 0.0.0.0:8000 --workers 5"]
+#CMD ["uv", "run", "--no-dev", "gunicorn", "laboratoriodolyc.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "5"]
 
 FROM ghcr.io/astral-sh/uv:0.9-trixie AS worker_production
 
