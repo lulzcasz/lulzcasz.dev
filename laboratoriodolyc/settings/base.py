@@ -78,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'laboratoriodolyc.urls'
@@ -153,8 +154,11 @@ STORAGES = {
             "location": "uploads",
         },
     },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    "staticfiles":     {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "OPTIONS": {
+            "location": "staticfiles",
+        },
     },
 }
 

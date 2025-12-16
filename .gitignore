@@ -2,6 +2,7 @@
 .uploads/
 __pycache__/
 webfonts/
+staticfiles/
 
 *.min.css
 *.min.js
