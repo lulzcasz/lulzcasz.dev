@@ -18,7 +18,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
-        ('products', '0001_initial'),
         ('taggit', '0006_rename_taggeditem_content_type_object_id_taggit_tagg_content_8fc721_idx'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]

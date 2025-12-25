@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     'treebeard',
     'taggit',
     'posts',
-    'products',
     'blog',
 ]
 
