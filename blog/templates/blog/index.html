@@ -30,19 +30,6 @@
                 ">
                   {{ posts.0.verbose_name|title }}
                 </span>
-                {% if posts.0.video %}
-                  <div style="
-                    position: absolute;
-                    top: 14px;
-                    right: 10px;
-                    z-index: 10;
-                  ">
-                    <i class="fa-solid fa-circle-play text-white" style="
-                        font-size: 40px; 
-                        opacity: 0.35; 
-                    "></i>
-                  </div>
-                {% endif %}
               </div>
               <div class="card-body">
                 <h5 class="card-title">{{ posts.0.title }}</h5>
@@ -73,19 +60,6 @@
                       ">
                         {{ post.verbose_name|title }}
                       </span>
-                      {% if post.video %}
-                        <div style="
-                          position: absolute;
-                          top: 14px;
-                          right: 10px;
-                          z-index: 10;
-                        ">
-                          <i class="fa-solid fa-circle-play text-white" style="
-                              font-size: 34px; 
-                              opacity: 0.35;
-                          "></i>
-                        </div>
-                      {% endif %}
                     </div>
                   </div>
                   <div class="col-lg-7">
