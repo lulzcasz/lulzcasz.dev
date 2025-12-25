@@ -36,10 +36,9 @@ def posts(request):
 
 def post_detail(request, post_slug):
     post = get_object_or_404(Post, slug=post_slug, status=Post.Status.PUBLISHED)
-    products = post.products.all()
 
     return render(
-        request, "blog/post_detail.html", {"post": post, "products": products},
+        request, "blog/post_detail.html", {"post": post},
     )
 
 

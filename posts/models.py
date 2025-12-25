@@ -47,12 +47,6 @@ class Post(PolymorphicModel):
     published_at = DateTimeField("publicado em", null=True, editable=False)
     status = CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     tags = TaggableManager(blank=True)
-    products = ManyToManyField(
-        'products.Product',
-        verbose_name="produtos",
-        related_name="posts",
-        blank=True,
-    )
 
     def save(self, *args, **kwargs):
         if not self.slug:

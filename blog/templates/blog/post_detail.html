@@ -51,44 +51,6 @@
         </div>
       </div>
       <div class="col-xl-3 mt-3" style="position: sticky; top: 1rem; height: fit-content;">
-        {% if products %}
-          <div class="row">
-            <div id="product-carousel">
-              {% for product in products %}
-                <div class="mb-2 border border-2 border-light carousel-item fade-transition" style="display: none;">
-                  <div class="card border-0 rounded-0 d-flex flex-row overflow-hidden h-100">            
-                    <div class="flex-grow-1 position-relative">
-                      <img class="product-main-img img-fluid w-100 h-100" 
-                        src="{{ product.image|variant:'small' }}" 
-                        alt="Product Image" 
-                        style="aspect-ratio: 1/1; object-fit: cover; width: 300px; height: 300px;">
-                    </div>
-                    <div class="bg-light p-2 d-flex flex-column align-items-center justify-content-center gap-1 flex-shrink-0" 
-                      style="min-width: 30px;">
-                      {% for product_link in product.links.all %}
-                        <a rel="sponsored nofollow" href="{{ product_link.url }}" target="_blank" class="opacity-100 transition">
-                          <img src="{{ product_link.platform.logo.url }}" 
-                            alt="Marketplace" 
-                            style="width: 30px; height: auto; object-fit: contain;">
-                        </a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-            <div class="d-flex align-items-center justify-content-between px-3 mt-2 mb-3">
-              <button id="prev-btn" class="carousel-nav-btn">
-                &#10094; 
-              </button>
-              <div id="carousel-pips" class="d-flex justify-content-center gap-2">
-              </div>
-              <button id="next-btn" class="carousel-nav-btn">
-                &#10095; 
-              </button>
-            </div>
-          </div>
-        {% endif %}
         {% if post.source_code %}
           <div class="pb-2">
             <a target="_blank" href="{{ post.source_code }}" 

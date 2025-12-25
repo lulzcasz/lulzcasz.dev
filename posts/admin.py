@@ -27,7 +27,6 @@ class PostChildAdmin(PolymorphicChildModelAdmin):
         return False
 
     search_fields = ['title', 'description']
-    filter_horizontal = ('products',) 
     list_display = ['title', 'status', 'created_at', 'updated_at', 'published_at',]
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ['uuid', 'created_at', 'updated_at', 'published_at']
