@@ -343,7 +343,7 @@ wheels = [
 ]
 
 [[package]]
-name = "laboratoriodolyc-com-br"
+name = "lulzcasz"
 version = "0.15.2"
 source = { virtual = "." }
 dependencies = [

@@ -1,1 +1,1 @@
-# laboratoriodolyc.com.br source code
+# lulzcasz.dev source code

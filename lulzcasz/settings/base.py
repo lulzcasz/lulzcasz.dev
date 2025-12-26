@@ -80,12 +80,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'laboratoriodolyc.urls'
+ROOT_URLCONF = 'lulzcasz.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'laboratoriodolyc/templates' ],
+        'DIRS': [ BASE_DIR / 'lulzcasz/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,7 +97,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'laboratoriodolyc.wsgi.application'
+WSGI_APPLICATION = 'lulzcasz.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -136,7 +136,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'laboratoriodolyc/static'
+    BASE_DIR / 'lulzcasz/static'
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

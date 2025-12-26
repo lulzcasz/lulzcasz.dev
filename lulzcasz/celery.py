@@ -1,6 +1,6 @@
 from celery import Celery
 
-app = Celery('laboratoriodolyc')
+app = Celery('lulzcasz')
 
 app.autodiscover_tasks()
 

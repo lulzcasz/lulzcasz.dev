@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /django-admin/
-
-Sitemap: https://www.laboratoriodolyc.com.br/sitemap.xml

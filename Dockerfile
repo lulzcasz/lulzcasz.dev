@@ -28,7 +28,7 @@ RUN uv sync --no-dev
 RUN uv tool install rust-just
 RUN just get-bootstrap get-prism get-font-awesome
 
-CMD ["/bin/sh", "-c", "uv run --no-dev manage.py collectstatic --no-input && uv run --no-dev gunicorn laboratoriodolyc.wsgi:application --bind 0.0.0.0:8000 --workers 5"]
+CMD ["/bin/sh", "-c", "uv run --no-dev manage.py collectstatic --no-input && uv run --no-dev gunicorn lulzcasz.wsgi:application --bind 0.0.0.0:8000 --workers 5"]
 
 FROM ghcr.io/astral-sh/uv:0.9-trixie AS worker_production
 
@@ -42,4 +42,4 @@ RUN apt update \
 
 RUN uv sync --no-dev
 
-CMD ["uv", "run", "--no-dev", "celery", "-A", "laboratoriodolyc", "worker", "-c", "2", "--loglevel", "INFO"]
+CMD ["uv", "run", "--no-dev", "celery", "-A", "lulzcasz", "worker", "-c", "2", "--loglevel", "INFO"]
