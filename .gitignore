@@ -6,3 +6,4 @@ staticfiles/
 
 *.min.css
 *.min.js
+*.mo

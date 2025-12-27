@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import index, sitemap
 from posts.sitemaps import StaticSitemap, PostSitemap, PostTypeSitemap
+from django.conf.urls.i18n import i18n_patterns
 
 
 sitemaps = {
@@ -22,8 +23,12 @@ urlpatterns = [
     path('sitemap.xml', index, {'sitemaps': sitemaps}),
     path('sitemap-<section>.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('', include('posts.urls')),
-    path('', include('blog.urls')),
 ]
+
+urlpatterns += i18n_patterns(
+    path('', include('blog.urls')),
+    prefix_default_language=False 
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

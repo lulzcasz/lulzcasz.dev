@@ -1,16 +1,20 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">lulzcasz</a>
+    <a class="navbar-brand" href="{% url 'home' %}"">lulzcasz</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'posts-by-type' post_type='tutoriais' %}">Tutoriais</a>
+          <a class="nav-link" href="{% url 'posts-by-type' post_type=tutorial_name_plural %}">
+            {{ tutorial_name_plural|title }}
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'posts-by-type' post_type='artigos' %}">Artigos</a>
+          <a class="nav-link" href="{% url 'posts-by-type' post_type=article_name_plural %}">
+            {{ article_name_plural|title }}
+          </a>
         </li>
       </ul>
     </div>

@@ -4,6 +4,7 @@ from posts.models import Post, Tutorial, Article
 from polymorphic.admin import (
     PolymorphicParentModelAdmin, PolymorphicChildModelAdmin, PolymorphicChildModelFilter
 )
+from modeltranslation.admin import TranslationAdmin
 
 class ArticleAdminForm(forms.ModelForm):
     genres = forms.MultipleChoiceField(
@@ -18,7 +19,7 @@ class ArticleAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class PostChildAdmin(PolymorphicChildModelAdmin):
+class PostChildAdmin(TranslationAdmin, PolymorphicChildModelAdmin):
     change_form_template = 'admin/posts/post/change_form.html'
     base_model = Post
     show_in_index = False

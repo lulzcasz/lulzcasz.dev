@@ -1,5 +1,6 @@
 from pathlib import Path
 from os import getenv
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -8,6 +9,7 @@ SECRET_KEY = getenv("SECRET_KEY")
 ALLOWED_HOSTS = getenv("ALLOWED_HOSTS", '*').split(",")
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'polymorphic',
@@ -23,12 +25,18 @@ INSTALLED_APPS = [
     'blog',
 ]
 
+gettext = lambda s: s
+
+LANGUAGES = [
+    ('en-us', _('English')),
+    ('pt-br', _('Portuguese')),
+]
+
 TAGGIT_CASE_INSENSITIVE = True
 
 TINYMCE_DEFAULT_CONFIG = {
     "height": "800px",
     "width": "100%",
-    'language': 'pt_BR',
     "menubar": False,
     "plugins": "image codesample directionality fullscreen link lists advlist media preview table code",
     "toolbar": "undo redo | blocks fontsize | bold italic underline strikethrough | align numlist bullist | link image | table media | lineheight outdent indent| forecolor backcolor removeformat | charmap emoticons | code fullscreen preview | pagebreak anchor codesample ltr rtl",
@@ -73,6 +81,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -92,6 +101,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'posts.context_processors.navbar_post_types',
             ],
         },
     },
@@ -125,11 +135,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'pt-br'
-
-TIME_ZONE = 'America/Santarem'
+LANGUAGE_CODE = 'en-us'
 
 USE_I18N = True
+USE_L10N = True
 
 USE_TZ = True
 
@@ -158,6 +167,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
+LOCALE_PATHS = [
+    BASE_DIR / 'lulzcasz/locale',
+]
 
 AWS_S3_ACCESS_KEY_ID = getenv("AWS_S3_ACCESS_KEY_ID")
 AWS_S3_SECRET_ACCESS_KEY = getenv("AWS_S3_SECRET_ACCESS_KEY")

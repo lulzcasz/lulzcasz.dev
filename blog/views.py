@@ -57,7 +57,9 @@ def posts_by_tag(request, tag_slug):
 
 def posts_by_type(request, post_type):
     model_mapping = {
+        "tutorials": Tutorial,
         "tutoriais": Tutorial,
+        "articles": Article,
         "artigos": Article,
     }
 
